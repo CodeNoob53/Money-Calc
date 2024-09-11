@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор купюр</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+</head>
+<body>
+  <div class="header">
+    <span class="app-name">Money Calc WEB App V 1.1.3</span>
+    <button id="toggleThemeButton">
+      <span class="icon"></span>
+      <span class="text">Світла тема</span>
+    </button>
+  </div>
+  <div class="container">
+    <h1>Калькулятор купюр</h1>
+    <div class="bill-and-coin-container">
+      <div class="bill-input-group">
+        <h2>Купюри</h2>
+        <div class="input-group">
+          <label for="thousand-bill">1000 грн:</label>
+          <input type="number" id="thousand-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'five-hundred-bill')">
+          <label for="five-hundred-bill">500 грн:</label>
+          <input type="number" id="five-hundred-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'two-hundred-bill')">
+        </div>
+        <div class="input-group">
+          <label for="two-hundred-bill">200 грн:</label>
+          <input type="number" id="two-hundred-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'hundred-bill')">
+          <label for="hundred-bill">100 грн:</label>
+          <input type="number" id="hundred-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'fifty-bill')">
+        </div>
+        <div class="input-group">
+          <label for="fifty-bill">50 грн:</label>
+          <input type="number" id="fifty-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'twenty-bill')">
+          <label for="twenty-bill">20 грн:</label>
+          <input type="number" id="twenty-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'ten-bill')">
+        </div>
+        <div class="input-group">
+          <label for="ten-bill">10 грн:</label>
+          <input type="number" id="ten-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'five-bill')">
+          <label for="five-bill">5 грн:</label>
+          <input type="number" id="five-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'two-bill')">
+        </div>
+        <div class="input-group">
+          <label for="two-bill">2 грн:</label>
+          <input type="number" id="two-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'one-bill')">
+          <label for="one-bill">1 грн:</label>
+          <input type="number" id="one-bill" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'thousand-bill')">
+        </div>
+      </div>  
+      <div class="coin-input-group">
+        <h2>Монети</h2>
+        <div class="input-group">
+          <label for="ten-coin">10 грн:</label>
+          <input type="number" id="ten-coin" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'ten-coin')">
+        </div>  
+        <div class="input-group">
+          <label for="five-coin">5 грн:</label>
+          <input type="number" id="five-coin" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event,'five-coin')">
+        </div>
+        <div class="input-group">
+          <label for="two-coin">2 грн:</label>
+          <input type="number" id="two-coin" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'two-coin')">
+        </div>
+        <div class="input-group">
+          <label for="one-coin">1 грн:</label>
+          <input type="number" id="one-coin" min="0" placeholder="Введіть кількість" onkeydown="moveToNext(event, 'one-coin')">
+        </div>
+      </div>
+    </div>  
+    <div>
+      <button onclick="saveResult()">Зберегти результат</button>
+      <button onclick="clearFields()">Очистити поля</button>
+    </div>
+    <div class="total" id="total">
+      <label>Загальна сума:</label> 
+      <span>0 грн</span>
+      <button id="calculatorButton" class="calculator-icon-btn">
+        <i class="material-icons">calculate</i>
+      </button>
+    </div>
+    
+    <div class="saved-results">
+      <h2>Збережені результати</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Час</th> 
+            <th>Сума</th>
+            <th>Різниця (+/-)</th>
+          </tr>
+        </thead>
+        <tbody id="saved-results-body">
+        </tbody>
+      </table>
+      <div class="resl_btn_gr">
+        <button onclick="clearTable()">Очистити таблицю</button>
+        <button onclick="saveToXlsx()">Зберегти в xlsx</button>
+      </div>
+    </div>
+
+    <!-- Модальне вікно калькулятора -->
+    <div id="calculatorModal" class="modal">
+      <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Калькулятор</h2>
+          <p>Поточна сума: <span id="current-total"></span> грн</p>
+          <input type="number" id="calculator-input" placeholder="Введіть значення">
+          <p>Різниця: <span id="difference-result"></span> грн</p>
+      </div>
+    </div>
+  </div>
+  <!-- Social Media Section -->
+  <div class="social-section">
+    <p>My social media:</p>
+    <div class="social-icons">
+      <a href="https://github.com/your-github-username" target="_blank" class="social-link">
+        <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577v-2.234c-3.338.724-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.757-1.333-1.757-1.09-.744.083-.729.083-.729 1.205.085 1.84 1.238 1.84 1.238 1.07 1.834 2.809 1.304 3.495.997.108-.776.418-1.305.763-1.605-2.665-.306-5.467-1.332-5.467-5.93 0-1.31.467-2.38 1.235-3.22-.123-.303-.535-1.523.118-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.984-.399 3.003-.404 1.019.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.655 1.653.243 2.873.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.807 5.62-5.479 5.918.43.371.823 1.102.823 2.222v3.293c0 .319.218.694.824.576 4.765-1.585 8.199-6.082 8.199-11.385 0-6.627-5.373-12-12-12z"/>
+        </svg>
+        <span>GitHub</span>
+      </a>
+      <a href="https://t.me/your-telegram-username" target="_blank" class="social-link">
+        <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="8 8 108 108" width="32" height="32">
+          <path d="M 64.000002,10.847658 C 34.644818,10.847767 10.847767,34.644818 10.847658,64.000002 10.84777,93.355184 34.64482,117.15223 64.000002,117.15234 93.355183,117.15223 117.15223,93.355183 117.15234,64.000002 117.15223,34.64482 93.355184,10.84777 64.000002,10.847658 Z m 27.533203,23.873047 c 2.159355,-0.07872 3.794128,1.876009 2.917969,5.388672 L 83.919924,89.74219 c -0.735207,3.5272 -2.86777,4.371077 -5.820313,2.742187 L 62.05469,80.628908 c -3.768605,3.664093 -7.144432,6.945669 -7.712891,7.501953 -0.893917,0.873247 -1.605929,1.605469 -3.210938,1.605469 -2.07976,0 -1.725837,-0.787042 -2.443359,-2.767578 L 42.785158,68.875002 27.359377,64.058596 c -3.426838,-1.049871 -3.45177,-3.403991 0.769531,-5.097656 l 61.84961,-23.855469 c 0.529657,-0.240389 1.056374,-0.3666 1.554687,-0.384766 z m -9.810547,10.556641 c -0.465094,-0.0065 -1.097161,0.159953 -1.748047,0.554687 L 45.207033,67.76758 51.064455,85.730471 52.224611,73.36719 81.996096,46.505861 c 0.816659,-0.724929 0.50172,-1.21776 -0.273438,-1.228515 z"/>
+        </svg>
+        <span>Telegram</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.4/xlsx.full.min.js"></script>
+  <script src="scripts.js"></script>
+</body>
+</html>
